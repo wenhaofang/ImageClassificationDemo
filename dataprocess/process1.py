@@ -6,15 +6,14 @@ import struct
 import numpy as np
 from PIL import Image
 
-from utils.parser import get_parser
+from utils.parser import get_config
 
-parser = get_parser()
-option = parser.parse_args()
+config = get_config()
 
-subprocess.run('mkdir -p %s' % option.sources_path, shell = True)
-subprocess.run('mkdir -p %s' % option.targets_path, shell = True)
+subprocess.run('mkdir -p %s' % config.sources_path, shell = True)
+subprocess.run('mkdir -p %s' % config.targets_path, shell = True)
 
-subprocess.run('mkdir -p %s' % os.path.join(option.targets_path, option.image_folder), shell = True)
+subprocess.run('mkdir -p %s' % os.path.join(config.targets_path, config.image_folder), shell = True)
 
 # The official website is http://yann.lecun.com/exdb/mnist/
 
@@ -26,11 +25,11 @@ onweb_paths = [
 ]
 
 ziped_paths = [
-    os.path.join(option.sources_path, onweb_path.split('/')[-1]) for onweb_path in onweb_paths
+    os.path.join(config.sources_path, onweb_path.split('/')[-1]) for onweb_path in onweb_paths
 ]
 
 unzip_paths = [
-    os.path.join(option.sources_path, onweb_path.split('/')[-1].split('.')[0]) for onweb_path in onweb_paths
+    os.path.join(config.sources_path, onweb_path.split('/')[-1].split('.')[0]) for onweb_path in onweb_paths
 ]
 
 for onweb_path, ziped_path, unzip_path in zip(onweb_paths, ziped_paths, unzip_paths):
@@ -40,7 +39,6 @@ for onweb_path, ziped_path, unzip_path in zip(onweb_paths, ziped_paths, unzip_pa
 
     if not os.path.exists(unzip_path):
         os.system('gzip -k -d %s' % (ziped_path))
-        os.system('mv %s %s' % (ziped_path.split('.')[0], unzip_path))
 
 def read_image_file(file_path):
     imgs = []
@@ -99,13 +97,13 @@ split_test_label = valid_label
 image_datas = [split_train_image, split_valid_image, split_test_image]
 label_datas = [split_train_label, split_valid_label, split_test_label]
 
-train_path = os.path.join(option.targets_path, option.train_file)
-valid_path = os.path.join(option.targets_path, option.valid_file)
-test_path  = os.path.join(option.targets_path, option.test_file )
+train_path = os.path.join(config.targets_path, config.train_file)
+valid_path = os.path.join(config.targets_path, config.valid_file)
+test_path  = os.path.join(config.targets_path, config.test_file )
 
 file_paths = [train_path, valid_path, test_path]
 
-image_folder = os.path.join(option.targets_path, option.image_folder)
+image_folder = os.path.join(config.targets_path, config.image_folder)
 
 counter = 0
 for file_path, images, labels in zip(file_paths, image_datas, label_datas):

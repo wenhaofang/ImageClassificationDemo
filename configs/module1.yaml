@@ -1,0 +1,9 @@
+# module1: MLP
+
+images_classifier:
+
+  input_dim: 784
+  output_dim: 10
+
+  mid_dim_1: 250
+  mid_dim_2: 100

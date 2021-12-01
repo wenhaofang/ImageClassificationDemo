@@ -1,0 +1,16 @@
+# loader2: cifar-10
+
+sources_path: 'datasources/cifar-10'
+targets_path: 'datatargets/cifar-10'
+
+train_file: 'train_data.tsv'
+valid_file: 'valid_data.tsv'
+test_file : 'test_data.tsv'
+
+image_folder: 'images'
+
+image_width : 32
+image_height: 32
+image_channels: 3
+
+num_classes: 10

@@ -1,0 +1,69 @@
+# module3: AlexNet
+
+feature_extractor:
+
+  conv1:
+    in_channels: 3
+    out_channels: 64
+    kernel_size: 3
+    stride: 2
+    padding: 1
+    dilation: 1
+
+  pool1:
+    kernel_size: 2
+    stride: 2
+    padding: 0
+    dilation: 1
+
+  conv2:
+    in_channels: 64
+    out_channels: 192
+    kernel_size: 3
+    stride: 1
+    padding: 1
+    dilation: 1
+
+  pool2:
+    kernel_size: 2
+    stride: 2
+    padding: 0
+    dilation: 1
+
+  conv3:
+    in_channels: 192
+    out_channels: 384
+    kernel_size: 3
+    stride: 1
+    padding: 1
+    dilation: 1
+
+  conv4:
+    in_channels: 384
+    out_channels: 256
+    kernel_size: 3
+    stride: 1
+    padding: 1
+    dilation: 1
+
+  conv5:
+    in_channels: 256
+    out_channels: 256
+    kernel_size: 3
+    stride: 1
+    padding: 1
+    dilation: 1
+
+  pool5:
+    kernel_size: 2
+    stride: 2
+    padding: 0
+    dilation: 1
+
+images_classifier:
+
+  input_dim: 1024
+  output_dim: 10
+
+  mid_dim_1: 4096
+  mid_dim_2: 4096

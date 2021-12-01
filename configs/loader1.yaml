@@ -1,0 +1,16 @@
+# loader1: mnist
+
+sources_path: 'datasources/mnist'
+targets_path: 'datatargets/mnist'
+
+train_file: 'train_data.tsv'
+valid_file: 'valid_data.tsv'
+test_file : 'test_data.tsv'
+
+image_folder: 'images'
+
+image_width : 28
+image_height: 28
+image_channels: 1
+
+num_classes: 10

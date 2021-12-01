@@ -19,18 +19,17 @@ torch.manual_seed(seed)
 torch.cuda.manual_seed(seed)
 torch.backends.cudnn.deterministic = True
 
-from utils.parser import get_parser
+from utils.parser import get_config
 from utils.logger import get_logger
 
-parser = get_parser()
-option = parser.parse_args()
+config = get_config()
 
 root_path = 'result'
 
-logs_folder = os.path.join(root_path, 'logs', option.name)
-save_folder = os.path.join(root_path, 'save', option.name)
-sample_folder = os.path.join(root_path, 'sample', option.name)
-result_folder = os.path.join(root_path, 'result', option.name)
+logs_folder = os.path.join(root_path, 'logs', config.name)
+save_folder = os.path.join(root_path, 'save', config.name)
+sample_folder = os.path.join(root_path, 'sample', config.name)
+result_folder = os.path.join(root_path, 'result', config.name)
 
 subprocess.run('mkdir -p %s' % logs_folder, shell = True)
 subprocess.run('mkdir -p %s' % save_folder, shell = True)
@@ -40,11 +39,14 @@ subprocess.run('mkdir -p %s' % result_folder, shell = True)
 logs_path = os.path.join(logs_folder, 'main.log' )
 save_path = os.path.join(save_folder, 'best.ckpt')
 
-logger = get_logger(option.name, logs_path)
+logger = get_logger(config.name, logs_path)
 
 from loaders.loader1 import get_loader as get_loader1
+from loaders.loader2 import get_loader as get_loader2
 
 from modules.module1 import get_module as get_module1
+from modules.module2 import get_module as get_module2
+from modules.module3 import get_module as get_module3
 
 from utils.misc import train, valid, save_checkpoint, load_checkpoint, save_sample
 
@@ -52,13 +54,19 @@ device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cp
 
 logger.info('prepare loader')
 
-if option.module == 1:
-    train_loader, valid_loader, test_loader = get_loader1(option)
+if config.loader == 1:
+    train_loader, valid_loader, test_loader = get_loader1(config)
+if config.loader == 2:
+    train_loader, valid_loader, test_loader = get_loader2(config)
 
 logger.info('prepare module')
 
-if option.module == 1:
-    module = get_module1(option).to(device)
+if config.module == 1:
+    module = get_module1(config).to(device)
+if config.module == 2:
+    module = get_module2(config).to(device)
+if config.module == 3:
+    module = get_module3(config).to(device)
 
 logger.info('prepare envs')
 
@@ -68,9 +76,9 @@ criterion = nn.CrossEntropyLoss()
 logger.info('start training!')
 
 best_valid_loss = float('inf')
-for epoch in range(option.num_epochs):
-    train_info = train(option.module, module, train_loader, criterion, optimizer, device)
-    valid_info = valid(option.module, module, valid_loader, criterion, optimizer, device)
+for epoch in range(config.num_epochs):
+    train_info = train(module, train_loader, criterion, optimizer, device)
+    valid_info = valid(module, valid_loader, criterion, optimizer, device)
     logger.info(
         '[Epoch %d] Train Loss: %f, Valid Loss: %f, Valid Macro F1: %f, Valid Micro F1: %f' %
         (epoch, train_info['loss'], valid_info['loss'], valid_info['macro_f1'], valid_info['micro_f1'])
@@ -84,7 +92,7 @@ logger.info('start testing!')
 
 load_checkpoint(save_path, module, optimizer)
 
-test_info = valid(option.module, module, test_loader, criterion, optimizer, device)
+test_info = valid(module, test_loader, criterion, optimizer, device)
 
 logger.info(
     'Test Loss: %f, Test Macro F1: %f, Test Micro F1: %f' %

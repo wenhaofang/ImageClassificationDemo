@@ -56,7 +56,7 @@ def save_sample(folder, true_label, prob_label, pred_label):
     np.savetxt(prob_label_path, prob_label)
     np.savetxt(pred_label_path, pred_label)
 
-def train(module_id, module, loader, criterion, optimizer, device):
+def train(module, loader, criterion, optimizer, device):
     module.train()
     epoch_loss = 0
     for mini_batch in tqdm.tqdm(loader):
@@ -72,7 +72,7 @@ def train(module_id, module, loader, criterion, optimizer, device):
         'loss': epoch_loss / len(loader)
     }
 
-def valid(module_id, module, loader, criterion, optimizer, device):
+def valid(module, loader, criterion, optimizer, device):
     module.eval()
     epoch_loss = 0
     prob_fold = []

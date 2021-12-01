@@ -1,4 +1,4 @@
-# MNIST
+# CIFAR-10
 
 import os
 
@@ -35,6 +35,7 @@ def read_images(image_shape, image_folder, image_ids, is_train = True, mean_valu
         image_std  = image_nums.std (axis = (0, 1, 2)) / 255
         image_transform = transforms.Compose([
             transforms.RandomRotation(5),
+            transforms.RandomHorizontalFlip(0.5), # diff
             transforms.RandomCrop(image_shape[:-1], padding = 2),
             transforms.ToTensor(),
             transforms.Normalize(mean = image_mean, std = image_std)

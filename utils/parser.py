@@ -1,3 +1,4 @@
+import yaml
 import argparse
 
 def get_parser():
@@ -7,31 +8,37 @@ def get_parser():
     parser.add_argument('--name', default = 'main', help = '')
 
     # For Loader
-    parser.add_argument('--sources_path', default = 'datasources', help = '')
-    parser.add_argument('--targets_path', default = 'datatargets', help = '')
-
-    parser.add_argument('--train_file', default = 'train_data.tsv', help = '')
-    parser.add_argument('--valid_file', default = 'valid_data.tsv', help = '')
-    parser.add_argument('--test_file' , default = 'test_data.tsv' , help = '')
-
-    parser.add_argument('--image_folder', default = 'images' , help = '')
+    parser.add_argument('--loader', type = int, choices = range(1, 4), default = 1, help = '')
+    parser.add_argument('--loader_config_path', default = 'configs/loader1.yaml')
 
     # For Module
-
-    parser.add_argument('--input_dim', type = int, default = 784, help = '')
-    parser.add_argument('--output_dim', type = int, default = 10, help = '')
-
-    parser.add_argument('--mid_dim_1', type = int, default = 250, help = '')
-    parser.add_argument('--mid_dim_2', type = int, default = 100, help = '')
+    parser.add_argument('--module', type = int, choices = range(1, 6), default = 1, help = '')
+    parser.add_argument('--module_config_path', default = 'configs/module1.yaml')
 
     # For Train
-    parser.add_argument('--module', type = int, choices = range(1, 7), default = 1, help = '')
-
     parser.add_argument('--batch_size', type = int, default = 64, help = '')
     parser.add_argument('--num_epochs', type = int, default = 10, help = '')
 
     return parser
 
-if __name__ == '__main__':
+def get_config():
     parser = get_parser()
     option = parser.parse_args()
+
+    with open(option.loader_config_path, 'r', encoding = 'utf-8') as config_file:
+        loader_config = yaml.full_load(config_file)
+
+    with open(option.module_config_path ,'r', encoding = 'utf-8') as config_file:
+        module_config = yaml.full_load(config_file)
+
+    config = {}
+    config.update(vars(option))
+    config.update(loader_config)
+    config.update(module_config)
+
+    config = argparse.Namespace(**config)
+    return config
+
+if __name__ == '__main__':
+    config = get_config()
+    print(config)
