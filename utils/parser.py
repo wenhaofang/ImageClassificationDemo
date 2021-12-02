@@ -15,6 +15,10 @@ def get_parser():
     parser.add_argument('--module', type = int, choices = range(1, 6), default = 1, help = '')
     parser.add_argument('--module_config_path', default = 'configs/module1.yaml')
 
+    parser.add_argument('--use_pretrain', action = 'store_true', help = '')
+
+    parser.add_argument('--vgg_net_arch', type = int, choices = [11, 13, 16, 19], default = 11, help = '')
+
     # For Train
     parser.add_argument('--batch_size', type = int, default = 64, help = '')
     parser.add_argument('--num_epochs', type = int, default = 10, help = '')

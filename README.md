@@ -9,13 +9,14 @@ Note: The project refers to https://github.com/bentrevett/pytorch-image-classifi
 Datasets
 
 * `dataset1`: [MNIST](http://yann.lecun.com/exdb/mnist/)
-* `dataset1`: [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html)
+* `dataset2`: [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html)
 
 Models
 
 * `model1`: Multilayer Perceptron
 * `model2`: LeNet
 * `model3`: AlexNet
+* `model4`: VGG
 
 ### Data Process
 
@@ -33,10 +34,10 @@ PYTHONPATH=. python dataprocess/process2.py \
 * for loader
 
 ```shell
-# loader1
+# loader1: MNIST
 PYTHONPATH=. python loaders/loader1.py \
     --loader_config_path configs/loader1.yaml
-# loader2
+# loader2: CIFAR-10
 PYTHONPATH=. python loaders/loader2.py \
     --loader_config_path configs/loader2.yaml
 ```
@@ -44,15 +45,38 @@ PYTHONPATH=. python loaders/loader2.py \
 * for module
 
 ```shell
-# module1
+# module1: MLP
 PYTHONPATH=. python modules/module1.py \
+    --loader_config_path configs/loader1.yaml \
     --module_config_path configs/module1.yaml
-# module2
+# module2: LeNet
 PYTHONPATH=. python modules/module2.py \
+    --loader_config_path configs/loader1.yaml \
     --module_config_path configs/module2.yaml
-# module3
+# module3: AlexNet
 PYTHONPATH=. python modules/module3.py \
+    --loader_config_path configs/loader2.yaml \
     --module_config_path configs/module3.yaml
+# module4: vgg11
+PYTHONPATH=. python modules/module4.py \
+    --loader_config_path configs/loader2.yaml \
+    --module_config_path configs/module4.yaml \
+    --vgg_net_arch 11
+# module4: vgg13
+PYTHONPATH=. python modules/module4.py \
+    --loader_config_path configs/loader2.yaml \
+    --module_config_path configs/module4.yaml \
+    --vgg_net_arch 13
+# module4: vgg16
+PYTHONPATH=. python modules/module4.py \
+    --loader_config_path configs/loader2.yaml \
+    --module_config_path configs/module4.yaml \
+    --vgg_net_arch 16
+# module4: vgg19
+PYTHONPATH=. python modules/module4.py \
+    --loader_config_path configs/loader2.yaml \
+    --module_config_path configs/module4.yaml \
+    --vgg_net_arch 19
 ```
 
 ### Main Process
@@ -86,7 +110,7 @@ python main.py \
 ```
 
 ```shell
-# loader2 & module3: CIFAR-10 % AlexNet
+# loader2 & module3: CIFAR-10 & AlexNet
 python main.py \
     --loader 2 \
     --loader_config_path configs/loader2.yaml \
@@ -94,4 +118,17 @@ python main.py \
     --module_config_path configs/module3.yaml \
     --name 2_3 \
     --num_epochs 25
+```
+
+```shell
+# loader2 & module4: CIFAR-10 & VGG
+# You can add --use_pretrain to use pre-trained model
+python main.py \
+    --loader 2 \
+    --loader_config_path configs/loader2.yaml \
+    --module 4 \
+    --module_config_path configs/module4.yaml \
+    --name 2_4 \
+    --vgg_net_arch 11 \
+    --num_epochs 5
 ```

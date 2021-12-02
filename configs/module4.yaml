@@ -1,0 +1,37 @@
+# module4: VGG
+
+feature_extractor:
+
+  conv:
+    kernel_size: 3
+    stride: 1
+    padding: 1
+    dilation: 1
+
+  pool:
+    kernel_size: 2
+    stride: 2
+    padding: 0
+    dilation: 1
+
+  batch_norm: True
+
+  vgg11: [64,     'M', 128,      'M', 256, 256,           'M', 512, 512,           'M', 512, 512,           'M']
+
+  vgg13: [64, 64, 'M', 128, 128, 'M', 256, 256,           'M', 512, 512,           'M', 512, 512,           'M']
+
+  vgg16: [64, 64, 'M', 128, 128, 'M', 256, 256, 256,      'M', 512, 512, 512,      'M', 512, 512, 512,      'M']
+
+  vgg19: [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 256, 'M', 512, 512, 512, 512, 'M', 512, 512, 512, 512, 'M']
+
+avg_pool:
+
+  output_size: 7
+
+images_classifier:
+
+  input_dim: 25088
+  output_dim: 10
+
+  mid_dim_1: 4096
+  mid_dim_2: 4096

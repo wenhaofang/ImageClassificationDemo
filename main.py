@@ -47,6 +47,7 @@ from loaders.loader2 import get_loader as get_loader2
 from modules.module1 import get_module as get_module1
 from modules.module2 import get_module as get_module2
 from modules.module3 import get_module as get_module3
+from modules.module4 import get_module as get_module4
 
 from utils.misc import train, valid, save_checkpoint, load_checkpoint, save_sample
 
@@ -67,6 +68,8 @@ if config.module == 2:
     module = get_module2(config).to(device)
 if config.module == 3:
     module = get_module3(config).to(device)
+if config.module == 4:
+    module = get_module4(config).to(device)
 
 logger.info('prepare envs')
 
