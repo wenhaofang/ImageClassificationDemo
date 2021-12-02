@@ -38,6 +38,7 @@ PYTHONPATH=. python dataprocess/process2.py \
 PYTHONPATH=. python loaders/loader1.py \
     --loader_config_path configs/loader1.yaml
 # loader2: CIFAR-10
+# You can add --use_pretrain to load dataset for pre-trained model
 PYTHONPATH=. python loaders/loader2.py \
     --loader_config_path configs/loader2.yaml
 ```

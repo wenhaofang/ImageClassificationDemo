@@ -15,9 +15,14 @@ def get_parser():
     parser.add_argument('--module', type = int, choices = range(1, 6), default = 1, help = '')
     parser.add_argument('--module_config_path', default = 'configs/module1.yaml')
 
+    parser.add_argument('--vgg_net_arch', type = int, choices = [11, 13, 16, 19], default = 11, help = '')
+
+    # For Pre-Train
     parser.add_argument('--use_pretrain', action = 'store_true', help = '')
 
-    parser.add_argument('--vgg_net_arch', type = int, choices = [11, 13, 16, 19], default = 11, help = '')
+    parser.add_argument('--pretrain_image_shape', type = int  , nargs = '+', default = (224, 224), help = '')
+    parser.add_argument('--pretrain_image_mean' , type = float, nargs = '+', default = (0.485, 0.456, 0.406), help = '')
+    parser.add_argument('--pretrain_image_std'  , type = float, nargs = '+', default = (0.229, 0.224, 0.225), help = '')
 
     # For Train
     parser.add_argument('--batch_size', type = int, default = 64, help = '')

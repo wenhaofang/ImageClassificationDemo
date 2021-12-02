@@ -52,6 +52,30 @@ def read_images(image_shape, image_folder, image_ids, is_train = True, mean_valu
         images = [image_transform(image_obj) for image_obj in image_objs] # (image_channels, image_height, image_width)
         return images
 
+def read_images_for_pretrain(pretrain_image_shape, image_folder, image_ids, is_train, mean_value, std_value):
+    image_pths = [os.path.join(image_folder, image_id + '.png') for image_id in image_ids]
+    image_objs = [Image.open(image_pth) for image_pth in image_pths] # (image_width, image_height)
+    image_nums = [np.asarray(image_obj) for image_obj in image_objs] # (image_height, image_width, image_channels)
+    if is_train:
+        image_transform = transforms.Compose([
+            transforms.Resize(pretrain_image_shape), # diff
+            transforms.RandomRotation(5),
+            transforms.RandomHorizontalFlip(0.5),
+            transforms.RandomCrop(pretrain_image_shape, padding = 10),
+            transforms.ToTensor(),
+            transforms.Normalize(mean = mean_value, std = std_value)
+        ])
+        images = [image_transform(image_obj) for image_obj in image_objs] # (image_channels, image_height, image_width)
+        return images
+    else:
+        image_transform = transforms.Compose([
+            transforms.Resize(pretrain_image_shape), # diff
+            transforms.ToTensor(),
+            transforms.Normalize(mean = mean_value, std = std_value)
+        ])
+        images = [image_transform(image_obj) for image_obj in image_objs] # (image_channels, image_height, image_width)
+        return images
+
 def get_loader(config):
 
     train_path = os.path.join(config.targets_path, config.train_file)
@@ -66,9 +90,14 @@ def get_loader(config):
     valid_image_ids, valid_labels = read_file(valid_path)
     test_image_ids , test_labels  = read_file(test_path )
 
-    train_images , mean, std = read_images(image_shape, image_folder, train_image_ids, True)
-    valid_images = read_images(image_shape, image_folder, valid_image_ids, False, mean, std)
-    test_images  = read_images(image_shape, image_folder, test_image_ids , False, mean, std)
+    if config.use_pretrain:
+        train_images = read_images_for_pretrain(config.pretrain_image_shape, image_folder, train_image_ids, True , config.pretrain_image_mean, config.pretrain_image_std)
+        valid_images = read_images_for_pretrain(config.pretrain_image_shape, image_folder, valid_image_ids, False, config.pretrain_image_mean, config.pretrain_image_std)
+        test_images  = read_images_for_pretrain(config.pretrain_image_shape, image_folder, test_image_ids , False, config.pretrain_image_mean, config.pretrain_image_std)
+    else:
+        train_images , mean, std = read_images(image_shape, image_folder, train_image_ids, True)
+        valid_images = read_images(image_shape, image_folder, valid_image_ids, False, mean, std)
+        test_images  = read_images(image_shape, image_folder, test_image_ids , False, mean, std)
 
     train_images_tensor = torch.stack(train_images)
     valid_images_tensor = torch.stack(valid_images)
