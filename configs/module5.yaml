@@ -1,0 +1,240 @@
+# module4: ResNet
+
+feature_extractor:
+
+  conv:
+    kernel_size: 7
+    stride: 2
+    padding: 3
+    dilation: 1
+    bias: False
+
+  max_pool:
+    kernel_size: 3
+    stride: 2
+    padding: 1
+    dilation: 1
+
+  basic_block:
+
+    layer_first:
+
+      block_first:
+        conv1:
+          kernel_size: 3
+          stride: 1
+          padding: 1
+          dilation: 1
+          bias: False
+        conv2:
+          kernel_size: 3
+          stride: 1
+          padding: 1
+          dilation: 1
+          bias: False
+        conv:
+          kernel_size: 1
+          stride: 1
+          padding: 0
+          dilation: 1
+          bias: False
+
+      block_other:
+        conv1:
+          kernel_size: 3
+          stride: 1
+          padding: 1
+          dilation: 1
+          bias: False
+        conv2:
+          kernel_size: 3
+          stride: 1
+          padding: 1
+          dilation: 1
+          bias: False
+        conv:
+          kernel_size: 1
+          stride: 1
+          padding: 0
+          dilation: 1
+          bias: False
+
+    layer_other:
+
+      block_first:
+        conv1:
+          kernel_size: 3
+          stride: 2 # diff
+          padding: 1
+          dilation: 1
+          bias: False
+        conv2:
+          kernel_size: 3
+          stride: 1
+          padding: 1
+          dilation: 1
+          bias: False
+        conv:
+          kernel_size: 1
+          stride: 2 # diff
+          padding: 0
+          dilation: 1
+          bias: False
+
+      block_other:
+        conv1:
+          kernel_size: 3
+          stride: 1
+          padding: 1
+          dilation: 1
+          bias: False
+        conv2:
+          kernel_size: 3
+          stride: 1
+          padding: 1
+          dilation: 1
+          bias: False
+        conv:
+          kernel_size: 1
+          stride: 1
+          padding: 0
+          dilation: 1
+          bias: False
+
+  bottle_neck:
+
+    layer_first:
+
+      block_first:
+        conv1:
+          kernel_size: 1
+          stride: 1
+          padding: 0
+          dilation: 1
+          bias: False
+        conv2:
+          kernel_size: 3
+          stride: 1
+          padding: 1
+          dilation: 1
+          bias: False
+        conv3:
+          kernel_size: 1
+          stride: 1
+          padding: 0
+          dilation: 1
+          bias: False
+        conv:
+          kernel_size: 1
+          stride: 1
+          padding: 0
+          dilation: 1
+          bias: False
+
+      block_other:
+        conv1:
+          kernel_size: 1
+          stride: 1
+          padding: 0
+          dilation: 1
+          bias: False
+        conv2:
+          kernel_size: 3
+          stride: 1
+          padding: 1
+          dilation: 1
+          bias: False
+        conv3:
+          kernel_size: 1
+          stride: 1
+          padding: 0
+          dilation: 1
+          bias: False
+        conv:
+          kernel_size: 1
+          stride: 1
+          padding: 0
+          dilation: 1
+          bias: False
+
+    layer_other:
+
+      block_first:
+        conv1:
+          kernel_size: 1
+          stride: 1
+          padding: 0
+          dilation: 1
+          bias: False
+        conv2:
+          kernel_size: 3
+          stride: 2 # diff
+          padding: 1
+          dilation: 1
+          bias: False
+        conv3:
+          kernel_size: 1
+          stride: 1
+          padding: 0
+          dilation: 1
+          bias: False
+        conv:
+          kernel_size: 1
+          stride: 2 # diff
+          padding: 0
+          dilation: 1
+          bias: False
+
+      block_other:
+        conv1:
+          kernel_size: 1
+          stride: 1
+          padding: 0
+          dilation: 1
+          bias: False
+        conv2:
+          kernel_size: 3
+          stride: 1
+          padding: 1
+          dilation: 1
+          bias: False
+        conv3:
+          kernel_size: 1
+          stride: 1
+          padding: 0
+          dilation: 1
+          bias: False
+        conv:
+          kernel_size: 1
+          stride: 1
+          padding: 0
+          dilation: 1
+          bias: False
+
+  ResNet18:
+    block: 'BasicBlock'
+    n_blocks: [2,  2,   2,   2  ]
+    channels: [64, 128, 256, 512]
+
+  ResNet34:
+    block: 'BasicBlock'
+    n_blocks: [3,  4,   6,   3  ]
+    channels: [64, 128, 256, 512]
+
+  ResNet50:
+    block: 'BottleNeck'
+    n_blocks: [3,  4,   6,   3  ]
+    channels: [64, 128, 256, 512]
+
+  ResNet101:
+    block: 'BottleNeck'
+    n_blocks: [3 , 4  , 23 , 3  ]
+    channels: [64, 128, 256, 512]
+
+  ResNet152:
+    block: 'BottleNeck'
+    n_blocks: [3 , 8  , 36 , 3  ]
+    channels: [64, 128, 256, 512]
+
+  avg_pool:
+    output_size: 1

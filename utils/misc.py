@@ -6,7 +6,9 @@ import torch
 def evaluate(true , pred):
     true_min, true_max = true.min(), true.max()
     pred_min, pred_max = pred.min(), pred.max()
-    matrix = np.zeros((true_max - true_min + 1, pred_max - pred_min + 1))
+    min_val = min(true_min, pred_min)
+    max_val = max(true_max, pred_max)
+    matrix = np.zeros((max_val - min_val + 1, max_val - min_val + 1))
     for i, j in zip(true , pred):
         matrix[i - true_min][j - pred_min] += 1
 
@@ -89,11 +91,11 @@ def valid(module, loader, criterion, optimizer, device):
     true_fold = torch.cat(true_fold).cpu().numpy()
     prob_fold = torch.cat(prob_fold).softmax(dim = -1).cpu().numpy()
     pred_fold = prob_fold.argmax(axis = 1)
-    info = evaluate(true_fold, pred_fold)[0]
+    eval_info = evaluate(true_fold, pred_fold)
     return {
         'loss': epoch_loss / len(loader),
-        'macro_f1': info[1],
-        'micro_f1': info[2],
+        'macro_f1': eval_info[1],
+        'micro_f1': eval_info[2],
         'true_fold': true_fold,
         'prob_fold': prob_fold,
         'pred_fold': pred_fold

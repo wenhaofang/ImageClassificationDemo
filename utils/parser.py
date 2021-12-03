@@ -8,7 +8,7 @@ def get_parser():
     parser.add_argument('--name', default = 'main', help = '')
 
     # For Loader
-    parser.add_argument('--loader', type = int, choices = range(1, 4), default = 1, help = '')
+    parser.add_argument('--loader', type = int, choices = range(1, 3), default = 1, help = '')
     parser.add_argument('--loader_config_path', default = 'configs/loader1.yaml')
 
     # For Module
@@ -16,6 +16,7 @@ def get_parser():
     parser.add_argument('--module_config_path', default = 'configs/module1.yaml')
 
     parser.add_argument('--vgg_net_arch', type = int, choices = [11, 13, 16, 19], default = 11, help = '')
+    parser.add_argument('--res_net_arch', type = int, choices = [18, 34, 50, 101, 152], default = 18, help = '')
 
     # For Pre-Train
     parser.add_argument('--use_pretrain', action = 'store_true', help = '')

@@ -17,6 +17,7 @@ Models
 * `model2`: LeNet
 * `model3`: AlexNet
 * `model4`: VGG
+* `model5`: ResNet
 
 ### Data Process
 
@@ -78,6 +79,31 @@ PYTHONPATH=. python modules/module4.py \
     --loader_config_path configs/loader2.yaml \
     --module_config_path configs/module4.yaml \
     --vgg_net_arch 19
+# module5: resnet18
+PYTHONPATH=. python modules/module5.py \
+    --loader_config_path configs/loader2.yaml \
+    --module_config_path configs/module5.yaml \
+    --res_net_arch 18
+# module5: resnet34
+PYTHONPATH=. python modules/module5.py \
+    --loader_config_path configs/loader2.yaml \
+    --module_config_path configs/module5.yaml \
+    --res_net_arch 34
+# module5: resnet50
+PYTHONPATH=. python modules/module5.py \
+    --loader_config_path configs/loader2.yaml \
+    --module_config_path configs/module5.yaml \
+    --res_net_arch 50
+# module5: resnet101
+PYTHONPATH=. python modules/module5.py \
+    --loader_config_path configs/loader2.yaml \
+    --module_config_path configs/module5.yaml \
+    --res_net_arch 101
+# module5: resnet152
+PYTHONPATH=. python modules/module5.py \
+    --loader_config_path configs/loader2.yaml \
+    --module_config_path configs/module5.yaml \
+    --res_net_arch 152
 ```
 
 ### Main Process
@@ -130,6 +156,17 @@ python main.py \
     --module 4 \
     --module_config_path configs/module4.yaml \
     --name 2_4 \
-    --vgg_net_arch 11 \
-    --num_epochs 5
+    --vgg_net_arch 11
+```
+
+```shell
+# loader2 & module5: CIFAR-10 & ResNet
+# You can add --use_pretrain to use pre-trained model
+python main.py \
+    --loader 2 \
+    --loader_config_path configs/loader2.yaml \
+    --module 5 \
+    --module_config_path configs/module5.yaml \
+    --name 2_5 \
+    --res_net_arch 18
 ```
